@@ -92,7 +92,7 @@ GET http://localhost:5000/shelters
 
 ## Testning
 
-**[AnimalShelter API](https://github.com/SandraKorpi/AnimalShelter.git)** innehåller automatiska tester för att verifiera funktionaliteten. Testerna körs med **JUnit** och kan exekveras med följande kommando:
+**[AnimalShelter API](https://github.com/SandraKorpi/AnimalShelter.git)** innehåller tester för att verifiera funktionaliteten. Testerna körs med **JUnit** och kan exekveras med följande kommando:
 
 ```bash
 mvn test
