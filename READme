@@ -9,7 +9,7 @@
 
 Denna klientapplikation är utvecklad för att kommunicera med **[AnimalShelter API](https://github.com/SandraKorpi/AnimalShelter.git)**, en webservice som erbjuder CRUD-funktionalitet för att hantera data relaterad till djurskydd. Klienten skickar HTTP-förfrågningar till API:t, där användaren kan se och manipulera djurskyddsdata via GET, POST, PUT och DELETE-anrop.
 
-Applikationen är kopplad till en MySQL-databas som körs på Amazon RDS och en frontend som kan nås på URL: **http://localhost:3000**.
+Applikationen är kopplad till en MySQL-databas som körs på Amazon RDS databas URL:jdbc:mysql://animalshelterdatabase.c96eumq2m82i.eu-north-1.rds.amazonaws.com:3306/molnintro1 och en frontend som kan nås på URL: **http://localhost:3000**.
 
 ## Krav
 
@@ -43,12 +43,6 @@ Applikationen är kopplad till en MySQL-databas som körs på Amazon RDS och en 
 
   9. **Micrometer Observation 1.13.4**
      - Används för att samla in och publicera applikationsmätvärden, som till exempel prestanda och svarstider, vilket kan vara användbart för övervakning och felsökning.
-
-## Databas- och säkerhetsinställningar
-
-- **Databas URL**: jdbc:mysql://animalshelterdatabase.c96eumq2m82i.eu-north-1.rds.amazonaws.com:3306/molnintro1
-- **Databasanvändare**:
-- **Databaslösenord**:
 
 ## Funktioner
 
