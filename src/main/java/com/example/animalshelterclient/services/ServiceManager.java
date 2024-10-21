@@ -24,7 +24,7 @@ public class ServiceManager {
         return mapper.writeValueAsString(shelter);
     }
 
-    // Skicka en GET-förfrågan
+    // Skicka en GET-förfrågan för att hämta alla shelters
     public static void sendGetRequest(String uri) throws IOException, ParseException {
         HttpGet request = new HttpGet(uri);
         try (CloseableHttpResponse response = httpClient.execute(request)) {
@@ -37,7 +37,7 @@ public class ServiceManager {
         }
     }
 
-    // Skicka en POST-förfrågan
+    // Skicka en POST-förfrågan för att skapa ett nytt shelter
     public static void sendPostShelterRequest(String uri, Shelter shelter) throws IOException, ParseException {
         HttpPost postRequest = new HttpPost(uri);
         StringEntity jsonPayload = new StringEntity(convertShelterToJson(shelter), ContentType.APPLICATION_JSON);
@@ -55,7 +55,7 @@ public class ServiceManager {
         }
     }
 
-    // Skicka en PUT-förfrågan
+    // Skicka en PUT-förfrågan för att uppdatera ett shelter
     public static void sendPutShelterRequest(String uri, Shelter shelter) throws IOException, ParseException {
         HttpPut putRequest = new HttpPut(uri);
         StringEntity jsonPayload = new StringEntity(convertShelterToJson(shelter), ContentType.APPLICATION_JSON);
@@ -73,7 +73,7 @@ public class ServiceManager {
         }
     }
 
-    // Skicka en DELETE-förfrågan
+    // Skicka en DELETE-förfrågan för att ta bort ett shelter
     public static void sendDeleteShelterRequest(String uri) throws IOException, ParseException {
         HttpDelete deleteRequest = new HttpDelete(uri);
         try (CloseableHttpResponse response = httpClient.execute(deleteRequest)) {
@@ -87,17 +87,27 @@ public class ServiceManager {
         }
     }
 
-    // Välj miljö (localhost eller AWS Elastic Beanstalk)
-    public static String chooseBaseUrl(String choice) {
-        String baseUrl;
-        if ("1".equals(choice)) {
-            baseUrl = "http://localhost:5000/shelter"; // Localhost
-        } else if ("2".equals(choice)) {
-            baseUrl = "http://animalshelterdatabase.c96eumq2m82i.eu-north-1.rds.amazonaws.com:3306/molnintro1/shelter"; // Din faktiska AWS Elastic Beanstalk URL
-        } else {
-            System.out.println("Ogiltigt val, avslutar programmet.");
-            return null;
-        }
-        return baseUrl;
+    // Testa alla CRUD-funktioner
+    public static void main(String[] args) throws IOException, ParseException {
+
+        String baseUri = "http://localhost:5000/shelter";
+
+        // Testa GET
+        System.out.println("Skickar GET-förfrågan för att hämta alla shelters...");
+        sendGetRequest(baseUri);
+
+        // Testa POST (Skapa nytt shelter)
+        Shelter newShelter = new Shelter("New Shelter", "Gothenburg", 15);
+        System.out.println("Skickar POST-förfrågan för att skapa ett nytt shelter...");
+        sendPostShelterRequest(baseUri, newShelter);
+
+        // Testa PUT (Uppdatera ett shelter)
+        Shelter updatedShelter = new Shelter("Updated Shelter", "Stockholm", 20);
+        System.out.println("Skickar PUT-förfrågan för att uppdatera shelter med ID 1...");
+        sendPutShelterRequest(baseUri + "/1", updatedShelter);
+
+        // Testa DELETE (Ta bort ett shelter)
+        System.out.println("Skickar DELETE-förfrågan för att ta bort shelter med ID 1...");
+        sendDeleteShelterRequest(baseUri + "/1");
     }
 }

@@ -29,26 +29,18 @@ Applikationen är kopplad till en MySQL-databas som körs på Amazon RDS och en 
   4. **Spring Boot Starter Web**
      - Inkluderar de nödvändiga modulerna för att skapa en webbaserad applikation med REST-API-funktionalitet. Innehåller stöd för HTTP-servrar och JSON-hantering.
 
-  5. **Spring Boot Starter Tomcat**
-     - En dependency som konfigurerar och startar en inbäddad Tomcat-server i applikationen, vilket hanterar alla HTTP-förfrågningar på port 5000.
-
-  6. **SLF4J 2.x**
+  5. **SLF4J 2.x**
      - Simple Logging Facade for Java (SLF4J) används för att hantera applikationens loggning. Detta möjliggör konsistent och anpassningsbar loggning av olika aktiviteter i applikationen.
 
-  7. **Logback 1.5.8**
+  6. **Logback 1.5.8**
      - Loggningsramverk som används tillsammans med SLF4J för att logga olika nivåer av information, varningar och fel i applikationen.
 
-  8. **Jakarta Annotation API 2.1.1**
-     - Innehåller stöd för Java-annoteringar som används för att deklarera olika typer av beteenden i applikationens kod, såsom REST-endpoints och validering.
-
-  9. **Micrometer Observation 1.13.4**
-     - Används för att samla in och publicera applikationsmätvärden, som till exempel prestanda och svarstider, vilket kan vara användbart för övervakning och felsökning.
 
 ## Databas- och säkerhetsinställningar
 
-- **Databas URL**: jdbc:mysql://animalshelterdatabase.c96eumq2m82i.eu-north-1.rds.amazonaws.com:3306/molnintro1
-- **Databasanvändare**:
-- **Databaslösenord**:
+- **Databas URL**: `jdbc:mysql://animalshelterdatabase.c96eumq2m82i.eu-north-1.rds.amazonaws.com:3306/molnintro1`
+ - **Frontend URL**: `http://localhost:3000`
+- **Server Port**: `5000`
 
 ## Funktioner
 
@@ -78,6 +70,7 @@ Applikationen är kopplad till en MySQL-databas som körs på Amazon RDS och en 
    ```bash
    mvn spring-boot:run
    ```
+
    Applikationen kommer att starta på port `5000`. Observera att API:t som klienten kommunicerar med körs på port **5000** för localhost.
 
 ## Användning
@@ -98,11 +91,10 @@ GET http://localhost:5000/shelters
 
 ## Testning
 
-**[AnimalShelter API](https://github.com/SandraKorpi/AnimalShelter.git)** innehåller automatiska tester för att verifiera funktionaliteten. Testerna körs med **JUnit** och kan exekveras med följande kommando:
+**[AnimalShelter API](https://github.com/SandraKorpi/AnimalShelter.git)** innehåller automatiska tester för att verifiera funktionaliteten. Testerna körs med **JUnit** och **Mockito** och kan exekveras med följande kommando:
 
 ```bash
 mvn test
 ```
 
 Testerna validerar att rätt data hämtas och att POST/PUT/DELETE-förfrågningar fungerar som förväntat.
-
