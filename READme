@@ -1,100 +1,93 @@
-# AnimalShelter Client Application
+AnimalShelter Client Application
+Kursnamn: Molnintegration
+Klass: JINH23
+Termin: Hösten 2024
+Författare: Andrea Sveinsdóttir
+Introduktion
+Denna klientapplikation är utvecklad för att kommunicera med AnimalShelter API, en webservice som erbjuder CRUD-funktionalitet för att hantera data relaterad till djurskydd. Klienten skickar HTTP-förfrågningar till API
+, där användaren kan se och manipulera djurskyddsdata via GET, POST, PUT och DELETE-anrop.
 
-### Kursnamn: Molnintegration
-### Klass: JINH23
-### Termin: Hösten 2024
-### Författare: Andrea Sveinsdóttir
+Applikationen är kopplad till en MySQL-databas som körs på Amazon RDS och en frontend som kan nås på URL: http://localhost:3000.
 
-## Introduktion
+Krav
+Java version: 21 (Amazon Corretto 21.0.4)
 
-Denna klientapplikation är utvecklad för att kommunicera med **[AnimalShelter API](https://github.com/SandraKorpi/AnimalShelter.git)**, en webservice som erbjuder CRUD-funktionalitet för att hantera data relaterad till djurskydd. Klienten skickar HTTP-förfrågningar till API:t, där användaren kan se och manipulera djurskyddsdata via GET, POST, PUT och DELETE-anrop.
+Maven: 3.6+
 
-Applikationen är kopplad till en MySQL-databas som körs på Amazon RDS och en frontend som kan nås på URL: **http://localhost:3000**.
+Dependencies:
 
-## Krav
+Spring Boot 3.3.4
 
-- **Java version**: 21 (Amazon Corretto 21.0.4)
-- **Maven**: 3.6+
-- **Dependencies**:
+Ramverket som används för att bygga applikationen och hantera webbservern (Tomcat) samt beroendehantering och konfiguration.
+Apache HttpClient 5.x
 
-  1. **Spring Boot 3.3.4**
-     - Ramverket som används för att bygga applikationen och hantera webbservern (Tomcat) samt beroendehantering och konfiguration.
+Bibliotek som används för att hantera HTTP-förfrågningar och -svar från klienten till servern. Används för att skicka GET, POST, PUT och DELETE-anrop till API
+.
+Jackson-databind 2.17.x
 
-  2. **Apache HttpClient 5.x**
-     - Bibliotek som används för att hantera HTTP-förfrågningar och -svar från klienten till servern. Används för att skicka GET, POST, PUT och DELETE-anrop till API:t.
+Används för att konvertera Java-objekt till JSON-format och tvärtom. Detta möjliggör enkel serialisering och deserialisering av data mellan klient och server.
+Spring Boot Starter Web
 
-  3. **Jackson-databind 2.17.x**
-     - Används för att konvertera Java-objekt till JSON-format och tvärtom. Detta möjliggör enkel serialisering och deserialisering av data mellan klient och server.
+Inkluderar de nödvändiga modulerna för att skapa en webbaserad applikation med REST-API-funktionalitet. Innehåller stöd för HTTP-servrar och JSON-hantering.
+SLF4J 2.x
 
-  4. **Spring Boot Starter Web**
-     - Inkluderar de nödvändiga modulerna för att skapa en webbaserad applikation med REST-API-funktionalitet. Innehåller stöd för HTTP-servrar och JSON-hantering.
+Simple Logging Facade for Java (SLF4J) används för att hantera applikationens loggning. Detta möjliggör konsistent och anpassningsbar loggning av olika aktiviteter i applikationen.
+Logback 1.5.8
 
-  5. **SLF4J 2.x**
-     - Simple Logging Facade for Java (SLF4J) används för att hantera applikationens loggning. Detta möjliggör konsistent och anpassningsbar loggning av olika aktiviteter i applikationen.
+Databas- och säkerhetsinställningar
+Databas URL: jdbc:mysql://animalshelterdatabase.c96eumq2m82i.eu-north-1.rds.amazonaws.com:3306/molnintro1
+Frontend URL: http://localhost:3000
+Server Port: 5000
+Funktioner
+CRUD-funktioner: Användaren kan hämta, skapa, uppdatera och ta bort djurskyddsdata via API
+.
+Val av miljö: Vid start kan användaren välja att köra klienten mot antingen en lokal instans av API
+eller en AWS-hostad version.
+Tillgängliga endpoints i API:t:
+GET: /shelters – Hämtar alla djurskydd.
+POST: /shelters – Skapar ett nytt djurskydd.
+PUT: /shelters/{id} – Uppdaterar ett befintligt djurskydd baserat på ID.
+DELETE: /shelters/{id} – Tar bort ett djurskydd baserat på ID.
+Installation
+Klona klienten från GitHub:
 
-  6. **Logback 1.5.8**
-     - Loggningsramverk som används tillsammans med SLF4J för att logga olika nivåer av information, varningar och fel i applikationen.
+bash
+Kopiera kod
+git clone https://github.com/Guppie88/AnimalshelterClient.git
+cd animalshelter-client
+Bygg projektet:
 
+bash
+Kopiera kod
+mvn clean install
+Starta applikationen:
 
-## Databas- och säkerhetsinställningar
+bash
+Kopiera kod
+mvn spring-boot:run
+Applikationen kommer att starta på port 5000. Observera att API
+som klienten kommunicerar med körs på port 5000 för localhost.
 
-- **Databas URL**: `jdbc:mysql://animalshelterdatabase.c96eumq2m82i.eu-north-1.rds.amazonaws.com:3306/molnintro1`
- - **Frontend URL**: `http://localhost:3000`
-- **Server Port**: `5000`
-
-## Funktioner
-
-- **CRUD-funktioner**: Användaren kan hämta, skapa, uppdatera och ta bort djurskyddsdata via API:t.
-- **Val av miljö**: Vid start kan användaren välja att köra klienten mot antingen en lokal instans av API:t eller en AWS-hostad version.
-
-### Tillgängliga endpoints i API:t:
-- **GET**: `/shelters` – Hämtar alla djurskydd.
-- **POST**: `/shelters` – Skapar ett nytt djurskydd.
-- **PUT**: `/shelters/{id}` – Uppdaterar ett befintligt djurskydd baserat på ID.
-- **DELETE**: `/shelters/{id}` – Tar bort ett djurskydd baserat på ID.
-
-## Installation
-
-1. **Klona klienten från GitHub**:
-   ```bash
-   git clone https://github.com/Guppie88/AnimalshelterClient.git
-   cd animalshelter-client
-   ```
-
-2. **Bygg projektet**:
-   ```bash
-   mvn clean install
-   ```
-
-3. **Starta applikationen**:
-   ```bash
-   mvn spring-boot:run
-   ```
-
-   Applikationen kommer att starta på port `5000`. Observera att API:t som klienten kommunicerar med körs på port **5000** för localhost.
-
-## Användning
-
+Användning
 Vid start av klientapplikationen får användaren välja mellan två alternativ:
 
-1. **Localhost**: Använd detta om du kör **AnimalShelter API** lokalt på din dator.
-   - Standardporten för API:t är **5000**.
+Localhost: Använd detta om du kör AnimalShelter API lokalt på din dator.
 
-2. **AWS (Elastic Beanstalk)**: Använd detta om du vill kommunicera med API:t som är deployat på AWS.
+Standardporten för API
+är 5000.
+AWS : Använd detta om du vill kommunicera med API
+som är deployat på AWS.
 
-### Exempel på GET-förfrågan:
-När applikationen startas och miljön har valts, skickas en GET-förfrågan till `/shelters` för att hämta alla djurskydd.
+Exempel på GET-förfrågan:
+När applikationen startas och miljön har valts, skickas en GET-förfrågan till /shelters för att hämta alla djurskydd.
 
-```bash
+bash
+Kopiera kod
 GET http://localhost:5000/shelters
-```
+Testning
+AnimalShelter API innehåller automatiska tester för att verifiera funktionaliteten. Testerna körs med JUnit och Mockito och kan exekveras med följande kommando:
 
-## Testning
-
-**[AnimalShelter API](https://github.com/SandraKorpi/AnimalShelter.git)** innehåller automatiska tester för att verifiera funktionaliteten. Testerna körs med **JUnit** och **Mockito** och kan exekveras med följande kommando:
-
-```bash
+bash
+Kopiera kod
 mvn test
-```
-
 Testerna validerar att rätt data hämtas och att POST/PUT/DELETE-förfrågningar fungerar som förväntat.
