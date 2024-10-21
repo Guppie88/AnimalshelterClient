@@ -78,9 +78,6 @@ Localhost:
 Använd detta om du kör AnimalShelter API lokalt på din dator. Standardporten för API
 är 5000.
 
-AWS:
-Använd detta om du vill kommunicera med API på AWS.
-
 Exempel på GET-förfrågan: När applikationen startas och miljön har valts, skickas en GET-förfrågan till /shelters för att hämta alla djurskydd.
 
 bash
