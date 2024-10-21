@@ -94,9 +94,6 @@ Kopiera kod
 mvn test
 Testerna validerar att rätt data hämtas och att POST/PUT/DELETE-förfrågningar fungerar som förväntat.
 
-### Författare  
-Andrea Sveinsdóttir
-
 ### GitHub-profil  
 [guppie88](https://github.com/Guppie88)
 
