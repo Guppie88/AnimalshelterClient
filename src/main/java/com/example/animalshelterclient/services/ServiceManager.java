@@ -19,6 +19,9 @@ public class ServiceManager {
     static CloseableHttpClient httpClient = HttpClients.createDefault();
     private static final ObjectMapper mapper = new ObjectMapper(); // Jackson ObjectMapper för JSON
 
+    // Swagger URL
+    private static final String SWAGGER_URL = "http://animalshelterapi-env.eba-mbz3mefy.eu-north-1.elasticbeanstalk.com/swagger-ui/index.html";
+
     // Konvertera Shelter-objekt till JSON
     public static String convertShelterToJson(Shelter shelter) throws JsonProcessingException {
         return mapper.writeValueAsString(shelter);
@@ -87,7 +90,13 @@ public class ServiceManager {
         }
     }
 
-    // Testa alla CRUD-funktioner
+    // Skicka en GET-förfrågan för att hämta Swagger-dokumentation
+    public static void fetchSwaggerDocumentation() throws IOException, ParseException {
+        System.out.println("Skickar GET-förfrågan till Swagger-dokumentationen...");
+        sendGetRequest(SWAGGER_URL);
+    }
+
+    // Testa alla CRUD-funktioner och Swagger-dokumentationen
     public static void main(String[] args) throws IOException, ParseException {
 
         String baseUri = "http://localhost:5000/shelter";
@@ -109,5 +118,8 @@ public class ServiceManager {
         // Testa DELETE (Ta bort ett shelter)
         System.out.println("Skickar DELETE-förfrågan för att ta bort shelter med ID 1...");
         sendDeleteShelterRequest(baseUri + "/1");
+
+        // Testa att hämta Swagger-dokumentationen
+        fetchSwaggerDocumentation();
     }
 }
