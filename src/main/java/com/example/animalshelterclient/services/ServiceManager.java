@@ -13,113 +13,111 @@ import org.apache.hc.core5.http.io.entity.EntityUtils;
 import org.apache.hc.core5.http.io.entity.StringEntity;
 
 import java.io.IOException;
+import java.util.Optional;
 
 public class ServiceManager {
 
-    static CloseableHttpClient httpClient = HttpClients.createDefault();
-    private static final ObjectMapper mapper = new ObjectMapper(); // Jackson ObjectMapper för JSON
+    private static final ObjectMapper mapper = new ObjectMapper();
+    private static final CloseableHttpClient httpClient = HttpClients.createDefault();
+    public static String baseUrl;
 
-    // Swagger URL
-    private static final String SWAGGER_URL = "http://animalshelterapi-env.eba-mbz3mefy.eu-north-1.elasticbeanstalk.com/swagger-ui/index.html";
+    public static void setBaseUrl(String url) {
+        baseUrl = url;
+    }
 
-    // Konvertera Shelter-objekt till JSON
     public static String convertShelterToJson(Shelter shelter) throws JsonProcessingException {
         return mapper.writeValueAsString(shelter);
     }
 
-    // Skicka en GET-förfrågan för att hämta alla shelters
-    public static void sendGetRequest(String uri) throws IOException, ParseException {
-        HttpGet request = new HttpGet(uri);
+    public static void getAllShelters() throws IOException, ParseException {
+        HttpGet request = new HttpGet(baseUrl);
         try (CloseableHttpResponse response = httpClient.execute(request)) {
             if (response.getCode() != 200) {
-                System.out.println("Fel! Statuskod: " + response.getCode() + " vid GET-förfrågan till: " + uri);
+                System.out.println("Fel! Statuskod: " + response.getCode() + " vid GET-förfrågan.");
                 return;
             }
             String jsonResp = EntityUtils.toString(response.getEntity());
-            System.out.println("GET-svar: " + jsonResp);
+            System.out.println("Alla shelters: " + jsonResp);
         }
     }
 
-    // Skicka en POST-förfrågan för att skapa ett nytt shelter
-    public static void sendPostShelterRequest(String uri, Shelter shelter) throws IOException, ParseException {
-        HttpPost postRequest = new HttpPost(uri);
-        StringEntity jsonPayload = new StringEntity(convertShelterToJson(shelter), ContentType.APPLICATION_JSON);
-        postRequest.setEntity(jsonPayload);
-
-        try (CloseableHttpResponse response = httpClient.execute(postRequest)) {
-            if (response.getCode() != 200 && response.getCode() != 201) {
-                String errorResponse = EntityUtils.toString(response.getEntity());
-                System.out.println("Fel! Statuskod: " + response.getCode() + " vid POST-förfrågan till: " + uri);
-                System.out.println("Felmeddelande från servern: " + errorResponse);
-            } else {
-                String jsonResp = EntityUtils.toString(response.getEntity());
-                System.out.println("POST-svar: " + jsonResp);
-            }
-        }
-    }
-
-    // Skicka en PUT-förfrågan för att uppdatera ett shelter
-    public static void sendPutShelterRequest(String uri, Shelter shelter) throws IOException, ParseException {
-        HttpPut putRequest = new HttpPut(uri);
-        StringEntity jsonPayload = new StringEntity(convertShelterToJson(shelter), ContentType.APPLICATION_JSON);
-        putRequest.setEntity(jsonPayload);
-
-        try (CloseableHttpResponse response = httpClient.execute(putRequest)) {
+    public static void getShelterByName(String name) throws IOException, ParseException {
+        // Se till att använda korrekt URL-format
+        HttpGet request = new HttpGet(baseUrl + "/name/" + name.replace(" ", "%20"));
+        try (CloseableHttpResponse response = httpClient.execute(request)) {
             if (response.getCode() != 200) {
-                String errorResponse = EntityUtils.toString(response.getEntity());
-                System.out.println("Fel! Statuskod: " + response.getCode() + " vid PUT-förfrågan till: " + uri);
-                System.out.println("Felmeddelande från servern: " + errorResponse);
+                System.out.println("Fel! Statuskod: " + response.getCode() + " vid GET-förfrågan för namn.");
+                return;
+            }
+            String jsonResp = EntityUtils.toString(response.getEntity());
+            System.out.println("Shelter med namn " + name + ": " + jsonResp);
+        }
+    }
+
+    public static void getOneShelter(long id) throws IOException, ParseException {
+        HttpGet request = new HttpGet(baseUrl + "/" + id);
+        try (CloseableHttpResponse response = httpClient.execute(request)) {
+            if (response.getCode() != 200) {
+                System.out.println("Fel! Statuskod: " + response.getCode() + " vid GET-förfrågan för ID.");
+                return;
+            }
+            String jsonResp = EntityUtils.toString(response.getEntity());
+            System.out.println("Shelter med ID " + id + ": " + jsonResp);
+        }
+    }
+
+    public static void updateAvailableBeds(long id, String availableBeds) throws IOException, ParseException {
+        HttpPut request = new HttpPut(baseUrl + "/" + id + "/available-beds");
+        StringEntity jsonPayload = new StringEntity(availableBeds, ContentType.APPLICATION_JSON);
+        request.setEntity(jsonPayload);
+
+        try (CloseableHttpResponse response = httpClient.execute(request)) {
+            if (response.getCode() != 204) {
+                System.out.println("Fel! Statuskod: " + response.getCode() + " vid uppdatering av sängar.");
+            } else {
+                System.out.println("Antal tillgängliga sängar uppdaterat för shelter med ID " + id);
+            }
+        }
+    }
+
+    public static void updateOneShelter(long id, Shelter shelter) throws IOException, ParseException {
+        HttpPut request = new HttpPut(baseUrl + "/" + id);
+        StringEntity jsonPayload = new StringEntity(convertShelterToJson(shelter), ContentType.APPLICATION_JSON);
+        request.setEntity(jsonPayload);
+
+        try (CloseableHttpResponse response = httpClient.execute(request)) {
+            if (response.getCode() != 200) {
+                System.out.println("Fel! Statuskod: " + response.getCode() + " vid uppdatering av shelter.");
             } else {
                 String jsonResp = EntityUtils.toString(response.getEntity());
-                System.out.println("PUT-svar: " + jsonResp);
+                System.out.println("Shelter uppdaterat: " + jsonResp);
             }
         }
     }
 
-    // Skicka en DELETE-förfrågan för att ta bort ett shelter
-    public static void sendDeleteShelterRequest(String uri) throws IOException, ParseException {
-        HttpDelete deleteRequest = new HttpDelete(uri);
-        try (CloseableHttpResponse response = httpClient.execute(deleteRequest)) {
-            if (response.getCode() != 200 && response.getCode() != 204) {
-                String errorResponse = EntityUtils.toString(response.getEntity());
-                System.out.println("Fel! Statuskod: " + response.getCode() + " vid DELETE-förfrågan till: " + uri);
-                System.out.println("Felmeddelande från servern: " + errorResponse);
+    public static void createNewShelter(Shelter shelter) throws IOException, ParseException {
+        HttpPost request = new HttpPost(baseUrl);
+        StringEntity jsonPayload = new StringEntity(convertShelterToJson(shelter), ContentType.APPLICATION_JSON);
+        request.setEntity(jsonPayload);
+
+        try (CloseableHttpResponse response = httpClient.execute(request)) {
+            if (response.getCode() != 201) {
+                System.out.println("Fel! Statuskod: " + response.getCode() + " vid skapande av shelter.");
             } else {
-                System.out.println("DELETE-förfrågan lyckades för ID: " + uri.substring(uri.lastIndexOf("/") + 1));
+                String jsonResp = EntityUtils.toString(response.getEntity());
+                System.out.println("Nytt shelter skapat: " + jsonResp);
             }
         }
     }
 
-    // Skicka en GET-förfrågan för att hämta Swagger-dokumentation
-    public static void fetchSwaggerDocumentation() throws IOException, ParseException {
-        System.out.println("Skickar GET-förfrågan till Swagger-dokumentationen...");
-        sendGetRequest(SWAGGER_URL);
-    }
-
-    // Testa alla CRUD-funktioner och Swagger-dokumentationen
-    public static void main(String[] args) throws IOException, ParseException {
-
-        String baseUri = "http://localhost:5000/shelter";
-
-        // Testa GET
-        System.out.println("Skickar GET-förfrågan för att hämta alla shelters...");
-        sendGetRequest(baseUri);
-
-        // Testa POST (Skapa nytt shelter)
-        Shelter newShelter = new Shelter("New Shelter", "Gothenburg", 15);
-        System.out.println("Skickar POST-förfrågan för att skapa ett nytt shelter...");
-        sendPostShelterRequest(baseUri, newShelter);
-
-        // Testa PUT (Uppdatera ett shelter)
-        Shelter updatedShelter = new Shelter("Updated Shelter", "Stockholm", 20);
-        System.out.println("Skickar PUT-förfrågan för att uppdatera shelter med ID 1...");
-        sendPutShelterRequest(baseUri + "/1", updatedShelter);
-
-        // Testa DELETE (Ta bort ett shelter)
-        System.out.println("Skickar DELETE-förfrågan för att ta bort shelter med ID 1...");
-        sendDeleteShelterRequest(baseUri + "/1");
-
-        // Testa att hämta Swagger-dokumentationen
-        fetchSwaggerDocumentation();
+    public static void deleteOneShelter(long id) throws IOException, ParseException {
+        HttpDelete request = new HttpDelete(baseUrl + "/" + id);
+        try (CloseableHttpResponse response = httpClient.execute(request)) {
+            if (response.getCode() != 204) {
+                System.out.println("Fel! Statuskod: " + response.getCode() + " vid borttagning av shelter.");
+            } else {
+                System.out.println("Shelter med ID " + id + " borttaget.");
+            }
+        }
     }
 }
