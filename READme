@@ -10,7 +10,6 @@ Denna klientapplikation är utvecklad för att kommunicera med **AnimalShelter A
 
 ---
 
-
 ## Krav
 
 - **Java version**: 21 (Amazon Corretto 21.0.4)
@@ -40,13 +39,13 @@ Denna klientapplikation är utvecklad för att kommunicera med **AnimalShelter A
   Användaren kan hämta, skapa, uppdatera och ta bort djurskyddsdata via API:t.
   
 - **Val av miljö**:  
-  Vid start kan användaren välja att köra klienten mot antingen en lokal instans av API:t eller en AWS-hostad version.
+  Vid start kan användaren välja att köra klienten mot antingen AWS-hostad version eller visa Swagger-dokumentationen för API:t.
 
 - **Tillgängliga endpoints i API:t**:  
-  - **GET**: `/shelters` – Hämtar alla djurskydd.  
-  - **POST**: `/shelters` – Skapar ett nytt djurskydd.  
-  - **PUT**: `/shelters/{id}` – Uppdaterar ett befintligt djurskydd baserat på ID.  
-  - **DELETE**: `/shelters/{id}` – Tar bort ett djurskydd baserat på ID.
+  - **GET**: `/shelter` – Hämtar alla djurskydd.  
+  - **POST**: `/shelter` – Skapar ett nytt djurskydd.  
+  - **PUT**: `/shelter/{id}` – Uppdaterar ett befintligt djurskydd baserat på ID.  
+  - **DELETE**: `/shelter/{id}` – Tar bort ett djurskydd baserat på ID.
 
 ---
 
@@ -56,43 +55,38 @@ Denna klientapplikation är utvecklad för att kommunicera med **AnimalShelter A
    ```bash
    git clone https://github.com/Guppie88/AnimalshelterClient.git
    cd animalshelter-client
-mvn clean install
+   ```
 
-Bygg projektet:
+2. **Bygg projektet**:
+   ```bash
+   mvn clean install
+   ```
 
-bash
-Kopiera kod
-mvn clean install
-Starta applikationen:
+3. **Starta applikationen**:
+   ```bash
+   mvn spring-boot:run
+   ```
 
-bash
-Kopiera kod
-mvn spring-boot:run
-Applikationen kommer att starta på port 5000. Observera att API
-som klienten kommunicerar med körs på port 5000 för localhost.
+   Applikationen kommer att fråga om val av miljö vid start.
 
-Användning
+---
+
+## Användning
+
 Vid start av klientapplikationen får användaren välja mellan två alternativ:
 
-Localhost:
-Använd detta om du kör AnimalShelter API lokalt på din dator. Standardporten för API
-är 5000.
+- **AWS-hostad API**: Används för att skicka förfrågningar till AWS-versionen av AnimalShelter API. Standardporten för API är 5000.
+- **Swagger-dokumentation**: Visar API-dokumentationen för att kunna granska tillgängliga endpoints och dataformat.
 
-Exempel på GET-förfrågan: När applikationen startas och miljön har valts, skickas en GET-förfrågan till /shelters för att hämta alla djurskydd.
+### Exempel på GET-förfrågan:
+När applikationen startas och AWS-miljön har valts, skickas en GET-förfrågan till `/shelter` för att hämta alla djurskydd.
 
-bash
-Kopiera kod
-GET http://localhost:5000/shelters
-Testning
-AnimalShelter API innehåller automatiska tester för att verifiera funktionaliteten. Testerna körs med JUnit och Mockito och kan exekveras med följande kommando:
+```bash
+GET http://animalshelterapi-env.eba-mbz3mefy.eu-north-1.elasticbeanstalk.com/shelter
+```
 
-bash
-Kopiera kod
-mvn test
-Testerna validerar att rätt data hämtas och att POST/PUT/DELETE-förfrågningar fungerar som förväntat.
 
 ### GitHub-profil  
 [guppie88](https://github.com/Guppie88)
-
 
 
